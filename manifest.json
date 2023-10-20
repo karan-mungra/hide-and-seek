@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "Hide and Seek",
+  "description": "This extension removes pages related to websites you don't want to store in your history.",
+  "version": "1.0",
+  "action": {
+    // "default_popup": "popup/popup.html"
+  },
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "permissions": ["storage", "activeTab", "tabs", "history"]
+}

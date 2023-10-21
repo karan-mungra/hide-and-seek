@@ -20,10 +20,13 @@ chrome.tabs.onUpdated.addListener((_tabId, changeInfo, tab) => {
   /// checks if the tab has visited to a new url
   if (changeInfo.url) {
     const current_tab_website = removeProtocolFromUrl(tab.url).split('/')[0]
-    chrome.storage.local.get(current_tab_website, (result) => {
+    chrome.storage.sync.get(current_tab_website, async (result) => {
       /// checking if the key exist, then delete the url because the state is `Hide`
       if (result.hasOwnProperty(current_tab_website)) {
         chrome.history.deleteUrl({ url: tab.url })
+        await chrome.action.setBadgeText({ tabId: tab.id, text: "Seek" })
+      } else {
+        await chrome.action.setBadgeText({ tabId: tab.id, text: "Hide" })
       }
     })
   }
@@ -40,11 +43,11 @@ chrome.action.onClicked.addListener(async (tab) => {
   })
   /// If the next_state is `Seek`, then delete the current website url from history
   if (next_state === 'Seek') {
-    await chrome.storage.local.set({ [current_tab_website]: true })
+    await chrome.storage.sync.set({ [current_tab_website]: true })
     chrome.history.deleteUrl({ url: tab.url })
   } else {
     /// Add the current website url back to history
-    await chrome.storage.local.remove(current_tab_website)
+    await chrome.storage.sync.remove(current_tab_website)
     chrome.history.addUrl({ url: tab.url })
   }
 })

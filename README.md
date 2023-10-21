@@ -16,6 +16,4 @@ A chrome extension to hide your favourite websites from history.
 - To again, record the history for the website. Just click again on the extension button which will be showing `Seek` as caption.
 - Now, the browser will again record history for that website.
 
-NOTE: The extension will only able to hide website from your local history. So, the extension will not effect history on other devices.
-
 Farewell, Hope you enjoy!

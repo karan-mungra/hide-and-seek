@@ -17,19 +17,16 @@ chrome.runtime.onInstalled.addListener(() => {
 })
 
 chrome.tabs.onUpdated.addListener((_tabId, changeInfo, tab) => {
-  /// checks if the tab has visited to a new url
-  if (changeInfo.url) {
-    const current_tab_website = removeProtocolFromUrl(tab.url).split('/')[0]
-    chrome.storage.sync.get(current_tab_website, async (result) => {
-      /// checking if the key exist, then delete the url because the state is `Hide`
-      if (result.hasOwnProperty(current_tab_website)) {
-        chrome.history.deleteUrl({ url: tab.url })
-        await chrome.action.setBadgeText({ tabId: tab.id, text: "Seek" })
-      } else {
-        await chrome.action.setBadgeText({ tabId: tab.id, text: "Hide" })
-      }
-    })
-  }
+  const current_tab_website = removeProtocolFromUrl(tab.url).split('/')[0]
+  chrome.storage.sync.get(current_tab_website, async (result) => {
+    /// checking if the key exist, then delete the url because the state is `Hide`
+    if (result.hasOwnProperty(current_tab_website)) {
+      chrome.history.deleteUrl({ url: tab.url })
+      await chrome.action.setBadgeText({ tabId: tab.id, text: "Seek" })
+    } else {
+      await chrome.action.setBadgeText({ tabId: tab.id, text: "Hide" })
+    }
+  })
 })
 
 chrome.action.onClicked.addListener(async (tab) => {
